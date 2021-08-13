@@ -6,7 +6,7 @@ import React from 'react';
 
 export default function Card({name, image , capital}) {
         return (
-                <div >
+                <div>
                         <h3>{name}</h3>
                         <h5>{capital}</h5>
                         <img src={image} alt='imagen de bandera'/>

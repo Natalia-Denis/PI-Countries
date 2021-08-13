@@ -1,0 +1,13 @@
+.numero {
+                border:5px;
+                display:inline;
+                text-decoration-color: blue;
+
+        }
+.lista {
+           display:inline-flex;
+           background-color: black;
+
+        }
+
+

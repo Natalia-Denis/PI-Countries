@@ -2,53 +2,88 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCountries } from "../actions";
+import { getCountries, filterbyRegion, orderby, postActivities } from "../actions";
 import Card from "./Card";
+import Paginado from './Paginado'
+import SearchBar from "./SearchBar";
+import ActivityCreate from './ActivityCreate';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const allcountries = useSelector((state) => state.countries);
+  const allCountries = useSelector((state) => state.countries);
+  const [orden, setOrden]= useState('');
+  const [currentPage, setCurrentPage]= useState(1);
+  const [countryPage, setcountryPage] = useState(9);
+  const indexOfLastCountry = currentPage * countryPage
+  const indexOfFirstCountry = indexOfLastCountry - countryPage
+  const currentCountry = allCountries.slice(indexOfFirstCountry,indexOfLastCountry)
+
+  const paginado= (pageNumber)=>{setCurrentPage(pageNumber)}
+
 
   useEffect(() => {
     dispatch(getCountries());
-  }, []);
-  function handleClick(e) {
+  }, [dispatch]);
+
+function handleClick(e){
+  e.preventDefault();
+  dispatch(getCountries());
+}
+
+  function handleRegion(e) {
+    dispatch(filterbyRegion(e.target.value));
+  }
+  function handleActivity(e){
+    dispatch(postActivities())
+  }
+
+  function handleOrder(e) {
     e.preventDefault();
-    dispatch(getCountries());
+    dispatch(orderby(e.target.value))
+    setCurrentPage(1)
+    setOrden(e.target.value)
   }
 
   return (
     <div>
-      <Link to="/countries"> Traer Paises</Link>
+      <Link to="/countries" onClick={e=>handleClick(e)}> Traer Paises</Link>
+      <Link to="/activity" onClick={e=>handleActivity(e)}> Crear Actividad</Link>
       <h1>Paises del Mundo</h1>
-      <button
-        onClick={(e) => {
-          handleClick(e);
-        }}
-      >
-        {" "}
-        Volver a cargar los paises{" "}
-      </button>
+
       <div>
-        <select>
-          <opcion value="asc">Ascendente</opcion>
-          <opcion value="desc">Descendente</opcion>
+        <select onChange={(e) => handleRegion(e)}>
+          <option value="All">Todos</option>
+          <option value="Americas">America</option>
+          <option value="Europe">Europa</option>
+          <option value="Asia">Asia</option>
+          <option value="Africa">Africa</option>
+          <option value="Oceania">Oceania</option>
+          <option value="Polar">Polar</option>
         </select>
-        <select>
-          <opcion value="americas">Americas</opcion>
-          <opcion value="europe">Europe</opcion>
-          <opcion value="asia">Asia</opcion>
-          <opcion value="africa">Africa</opcion>
-          <opcion value="oceania">Oceania</opcion>
-          <opcion value="polar">Polar</opcion>
+      </div>
+      <div>
+        <select onChange={(e) => handleOrder(e)}>
+          <option value="desPop">Mayor Poblacion</option>
+          <option value="ascPop">Menor Poblacion</option>
+          <option value="desName">Nombre Descendente</option>
+          <option value="ascName">Nombre Ascendente</option>
         </select>
-        {
-          allcountries?.map((el) => {
-                  return(
-            <Link to = {'/home/'+ el.id}>
-            <Card name={el.name} capital={el.capital} image={el.image} />
+      </div>
+      <SearchBar/>
+      <Paginado 
+      countryPage={countryPage} 
+      allCountries={allCountries.length}
+      paginado={paginado}/>
+      <div>
+
+        {currentCountry?.map((el) => {
+          return (
+            <Link to={"/home/" + el.id}>
+              <Card name={el.name} capital={el.continent} image={el.image} />
             </Link>
-          )})}
+            
+          );
+        })}
       </div>
     </div>
   );
