@@ -1,17 +1,35 @@
-const { Router } = require('express');
-const axios = require('axios')
-
+const { Router } = require("express");
+const { Country, Tourism, country_tourism } = require("../db");
+const axios = require("axios");
 
 const router = Router();
 
-router.get('/',(req,res)=>{
-        res.send('Soy el get de tourism')
-})
+router.get("/", async (req, res) => {
+  const activity = await Tourism.findAll({
+    include : Country
+  });
+  res.json(activity);
+});
 
-router.post ('/',(req,res)=>{
-        res.send('soy el post de tourism')
-})
 
 
+router.post("/", async (req, res) => {
+        try {
+        const { name, dificultad, duracion, temporada, idC } = req.body;
+       let [create, hola] = await Tourism.findOrCreate({
+               where: {name},
+              defaults : {
+                name,
+                dificultad,
+                duracion,
+                temporada
+              }});
+          create.setCountries(idC)   
+         res.send(create);
+        
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router;
