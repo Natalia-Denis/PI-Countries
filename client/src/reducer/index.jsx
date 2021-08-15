@@ -6,12 +6,14 @@ import {
   GET_QUERY_COUNTRY,
   POST_ACTIVITY,
   GET_ACTIVITIES,
+  GET_DETAIL,
   } from "../actions/constantes";
 
 var initialState = {
   countries: [],
   allCountries: [],
   activities:[],
+  detail:{}
 };
 
 function reducer(state = initialState, action) {
@@ -86,6 +88,11 @@ function reducer(state = initialState, action) {
         ...state,
         countries: arr,
       };
+      case GET_DETAIL:
+      return{
+        ...state,
+        detail:action.payload
+      }
     default:
       return state;
   }

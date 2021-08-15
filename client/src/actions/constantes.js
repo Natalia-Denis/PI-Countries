@@ -5,4 +5,5 @@ export const FILTER_BY_ACTIVITY = 'FILTER_BY_ACTIVITY'
 export const ORDER_BY = 'ORDER_BY'
 export const GET_QUERY_COUNTRY = 'GET_QUERY_COUNTRY'
 export const POST_ACTIVITY = 'POST_ACTIVITY'
+export const GET_DETAIL= 'GET_DETAIL'
 

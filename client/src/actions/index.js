@@ -6,6 +6,7 @@ import {
   FILTER_BY_ACTIVITY,
   ORDER_BY,
   GET_QUERY_COUNTRY,
+  GET_DETAIL
   
 } from "./constantes";
 import { COUNTRY_URL, QUERY_URL, ACTIVITIES_URL } from "../routes";
@@ -68,4 +69,14 @@ export function orderby(payload){
                 type: ORDER_BY ,
                 payload
         };
+}
+
+export function getDetail (id){
+  return async function (dispatch) {
+    var countries = await axios.get(COUNTRY_URL+'/'+id);
+    return dispatch({
+      type: GET_DETAIL,
+      payload: countries.data,
+    });
+  };
 }

@@ -2,13 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getCountries, filterbyRegion, orderby, postActivities } from "../actions";
-import Card from "./Card";
+import { getCountries, filterbyRegion, orderby } from "../actions";
+import Cards from "./Cards";
 import Paginado from './Paginado'
 import SearchBar from "./SearchBar";
-import ActivityCreate from './ActivityCreate';
+
 
 export default function Home() {
+
   const dispatch = useDispatch();
   const allCountries = useSelector((state) => state.countries);
   const [orden, setOrden]= useState('');
@@ -33,9 +34,6 @@ function handleClick(e){
   function handleRegion(e) {
     dispatch(filterbyRegion(e.target.value));
   }
-  function handleActivity(e){
-    dispatch(postActivities())
-  }
 
   function handleOrder(e) {
     e.preventDefault();
@@ -47,7 +45,7 @@ function handleClick(e){
   return (
     <div>
       <Link to="/countries" onClick={e=>handleClick(e)}> Traer Paises</Link>
-      <Link to="/activity" onClick={e=>handleActivity(e)}> Crear Actividad</Link>
+     
       <h1>Paises del Mundo</h1>
 
       <div>
@@ -74,17 +72,13 @@ function handleClick(e){
       countryPage={countryPage} 
       allCountries={allCountries.length}
       paginado={paginado}/>
-      <div>
 
-        {currentCountry?.map((el) => {
-          return (
-            <Link to={"/home/" + el.id}>
-              <Card name={el.name} capital={el.continent} image={el.image} />
-            </Link>
-            
-          );
-        })}
-      </div>
+     
+      {currentCountry? 
+      <Cards/>
+      :<p>Cargando...</p>
+      }
+     
     </div>
   );
 }
