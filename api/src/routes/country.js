@@ -4,7 +4,8 @@ const axios = require("axios");
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req, res ) => {
+  
   const name = req.query.name;
   const countries = await Country.findAll({
     include : Tourism
@@ -19,9 +20,11 @@ router.get("/", async (req, res) => {
   } else {
     res.status(200).send(countries);
   }
+
 });
 
-router.get("/:idPais", async (req, res) => {
+
+router.get("/:idPais", async (req, res ) => {
   const {idPais} = req.params;
   if (!idPais) {
     return res.send("No hay id");

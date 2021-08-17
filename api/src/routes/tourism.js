@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
         try {
-        const { name, dificultad, duracion, temporada, idC } = req.body;
+        const { name, dificultad, duracion, temporada, paises } = req.body;
        let [create, hola] = await Tourism.findOrCreate({
                where: {name},
               defaults : {
@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
                 duracion,
                 temporada
               }});
-          create.setCountries(idC)   
+          create.setCountries(paises)   
          res.send(create);
         
   } catch (error) {

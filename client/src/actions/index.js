@@ -6,7 +6,8 @@ import {
   FILTER_BY_ACTIVITY,
   ORDER_BY,
   GET_QUERY_COUNTRY,
-  GET_DETAIL
+  GET_DETAIL,
+  GET_DETAIL_ACTIVITIES,
   
 } from "./constantes";
 import { COUNTRY_URL, QUERY_URL, ACTIVITIES_URL } from "../routes";
@@ -80,3 +81,5 @@ export function getDetail (id){
     });
   };
 }
+
+

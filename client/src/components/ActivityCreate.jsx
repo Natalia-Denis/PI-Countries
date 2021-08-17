@@ -1,22 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { postActivities} from "../actions/index";
+import { postActivities } from "../actions/index";
+import { ACTIVITIES_URL } from "../routes"; 
+import axios from "axios";
+
 
 export default function ActivityCreate() {
   const dispatch = useDispatch();
   const countries = useSelector((state) => state.allCountries);
 
+  const [validate, setValidate]= useState({})
+
   const [activity, setActivity] = useState({
     name: "",
-    dificultad: "",
+    dificultad: "1",
     duracion: "",
-    temporada: "",
-    pais:'',
+    temporada: "Verano",
+    pais: "",
     paises: [],
   });
-  
 
-  
   function onInputChange(e) {
     setActivity(() => {
       return {
@@ -26,41 +29,75 @@ export default function ActivityCreate() {
     });
   }
 
- 
-
   function agregarPais() {
-   //controlar si el nombre ya esta cargado 
-   //pregunto si el activity.paises ya tiene el id q le quiero cargar
-   //var aux=countries.filter(e=>e.name)
-   //if(!activity.paises.include(aux.id)){
-     activity.pais && setActivity({...activity,paises:[...activity.paises, countries.filter((e)=>e.name===activity.pais && {id:e.id} )]})
-   //}else alert('El pais ya existe')
+    var aux=countries.filter(e=>e.name===activity.pais)
+    console.log (aux[0], 'pais')
+    console.log (aux[0].name,'name')
+
+    if(activity.paises.length===0){
+        setActivity({
+        ...activity,
+        paises: [
+          ...activity.paises, 
+          aux[0].id] })
+          console.log (activity.paises, 'primer pais')
+    }else {
+      console.log('son mas de uno')
+      for(let i=0;i<activity.paises.length;i++){
+        if(activity.paises[i]!==aux[0].id){
+         setActivity({
+            ...activity,
+            paises:[...activity.paises,aux[0].id]
+          })
+          console.log (activity.paises)
+        }else {
+          setActivity({...activity, paises:[...activity.paises]})
+          alert('El pais ya esta agregado a esta actividad')
+          
+        }
+      }
+   } 
+  console.log(activity.paises)
   }
 
-  function handleSubmit(e) {
+ function borrarPais(id){
+   console.log (id, 'id de borrar')
+   setActivity({
+     paises:[activity.paises.filter(el=>el!==id)]
+   })
+   console.log(activity.paises, 'ya borrado')
+
+ }
+  async function handleSubmit(e) {
     e.preventDefault();
-    dispatch(postActivities(activity));
+    var info= error(activity)
+    if (Object.keys(info).length!==0){
+      setValidate(info)
+    }else {
+    await axios.post(ACTIVITIES_URL, activity)
     alert("Actividad Creada");
     setActivity({
       name: "",
-      dificultad: "",
+      dificultad: "1",
       duracion: "",
-      temporada: "",
-      pais:'',
+      temporada: "Verano",
+      pais: "",
       paises: [],
-    });
+    })}
   }
 
-  function cancelar (){
+  function cancelar() {
     setActivity({
       name: "",
-      dificultad: "",
+      dificultad: "1",
       duracion: "",
-      temporada: "",
-      pais:'',
+      temporada: "Verano",
+      pais: "",
       paises: [],
-    })
+    });
    }
+
+
 
   //const { name, dificultad, duracion, temporada } = req.body;
   return (
@@ -78,10 +115,12 @@ export default function ActivityCreate() {
               onChange={(e) => onInputChange(e)}
             />
           </p>
+          {validate.name && <h5>{validate.name}</h5>}
           <p>
             <label>Dificultad:</label>
             <select name="dificultad" onChange={(e) => onInputChange(e)}>
-              <option name="dificultad" value="1">
+            
+              <option defaultValue name="dificultad" value="1">
                 1
               </option>
               <option name="dificultad" value="2">
@@ -104,14 +143,18 @@ export default function ActivityCreate() {
               type="number"
               value={activity.duracion}
               name="duracion"
+              placeholder= 'tiempo de duracion de la actividad'
               onChange={(e) => onInputChange(e)}
             />{" "}
             <span> minutos </span>
           </p>
+          {validate.duracion && <h5>{validate.duracion}</h5>}
           <p>
             <label>Temporada:</label>
             <select name="temporada" onChange={(e) => onInputChange(e)}>
-              <option name="temporada" value="Verano">Verano</option>
+              <option  name="temporada" value="Verano">
+                Verano
+              </option>
               <option name="temporada" value="Otoño">
                 Otoño
               </option>
@@ -123,25 +166,42 @@ export default function ActivityCreate() {
               </option>
             </select>
           </p>
- 
         </form>
       </div>
-      
-       <table>
-          <label>Paises donde se realiza:</label>
-          <input type="datalist" name='pais' list='paises' value={activity.pais} onChange={(e)=>onInputChange(e)}/>
-          <datalist id='paises'>
-            {countries && countries.map((e)=> (<option value={e.name} /> ) )}
-               
-          </datalist>
-          <button onClick={()=>agregarPais()}> Agregar Pais</button>
-          </table>
-          <p>
-          <button type="submit">Crear Actividad</button>
-          <button onClick={()=>cancelar()}>Cancelar</button>
-          </p> 
-        
-      </div>
-    
+      <table>
+        <label>Paises donde se realiza:</label>
+        <input
+          type="datalist"
+          name="pais"
+          list="paises"
+          value={activity.pais}
+          onChange={(e) => onInputChange(e)}
+        />
+        <datalist id="paises">
+          {countries && countries.map((e) => <option value={e.name} />)}
+          </datalist> 
+        <button onClick={() => agregarPais()}> Agregar Pais</button>
+      {activity.paises.map(el => 
+      <div className=''> <p> {el} </p> 
+      <tr>
+      <button value={el} onClick={()=>borrarPais(el)}>X</button>
+      </tr>
+      </div>   
+       )}
+      </table>
+      {validate.paises && <h5>{validate.paises}</h5>}
+      <p>
+        <button type="submit" onClick={handleSubmit}>Crear Actividad</button>
+        <button onClick={() => cancelar()}>Cancelar</button>
+      </p>
+    </div>
   );
+}
+
+function error (datos){
+  var data ={}
+  if(!datos.name){data.name = 'Debe ingresar un nombre'}
+  if(!datos.duracion) {data.duracion = 'Debe ingresar el tiempo de duracion'}
+  if(datos.paises.length<1) {data.paises = 'Debe ingresar por lo menos un pais'}
+   return data
 }

@@ -7,20 +7,23 @@ import {
   POST_ACTIVITY,
   GET_ACTIVITIES,
   GET_DETAIL,
+  
   } from "../actions/constantes";
 
 var initialState = {
   countries: [],
   allCountries: [],
   activities:[],
-  detail:{}
+  allActivities:[],
+  detail:{},
+  activitiesDetail:{}
 };
 
 function reducer(state = initialState, action) {
   //un switch con nuestras acciones posibles
   switch (action.type) {
     case GET_COUNTRIES:
-      return {
+       return {
         ...state,
         countries: action.payload,
         allCountries: action.payload,
@@ -33,28 +36,30 @@ function reducer(state = initialState, action) {
         case GET_ACTIVITIES:
           return {
             ...state,
-            activities:action.payload
+            activities:action.payload,
+            allActivities:action.payload
           }
         case POST_ACTIVITY:
           return {
             ...state
           };
     case FILTER_BY_REGION:
-      const allCountries = state.allCountries;
-
-      if (action.payload === "All") {
-        var countriesFiltered = allCountries;
-      } else {
-        countriesFiltered = allCountries.filter(
-          (el) => el.continent === action.payload
-        );
-      }
       return {
         ...state,
-        countries: countriesFiltered,
+        countries: state.allCountries.filter(
+          (el) => el.continent === action.payload
+        )
       };
-    case FILTER_BY_ACTIVITY:
-      break;
+    case FILTER_BY_ACTIVITY: 
+      var naty= state.allCountries.filter(el=>{
+      var y= el.tourisms.find(x=> x.name.toLowerCase()===action.payload.toLowerCase())
+      return y!==undefined
+    })
+        return {
+        ...state,
+        countries: naty
+      };
+      
     case ORDER_BY:
       var arr;
       if (action.payload === "desPop") {
@@ -93,6 +98,7 @@ function reducer(state = initialState, action) {
         ...state,
         detail:action.payload
       }
+     
     default:
       return state;
   }

@@ -3,22 +3,21 @@ import './Paginado.css';
 
 
 
-export default function Paginado({ countryPage, allCountries, paginado }) {
+export default function Paginado({ countryPerPage, allCountries, paginado}) {
   const pageNumber = [];
 
-  for (let i = 0; i < Math.ceil(allCountries/countryPage); i++) {
+  for (let i = 0; i < Math.ceil(allCountries/countryPerPage); i++) {
     pageNumber.push(i+1);
   }
+  
   return (
-    <nav  >
-      <ul >
-        {pageNumber.map(num =>(
-     
-          <button onClick={() => paginado(num)}>{num} </button>
+    <nav>
+    <ul>
+      {pageNumber && pageNumber.map(num =>
       
-          
-          ))}
-      </ul>
+     <button onClick={() => paginado(num)}>{num} </button>) }
+   
+     </ul>
     </nav>
-  );
+ )
 }

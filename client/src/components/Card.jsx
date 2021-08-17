@@ -11,7 +11,7 @@ export default function Card({name, image , capital}) {
                 <div>
                         <h3>{name}</h3>
                         <h5>{capital}</h5>
-                        <img src={image} alt='imagen de bandera'/>
+                        <img src={image} alt='imagen de bandera' width='200px' height= '100px' />
 
 
 
