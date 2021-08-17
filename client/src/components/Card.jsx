@@ -1,17 +1,14 @@
-//import express from 'express';
+
 import React from 'react';
+import style from './Card.module.css'
 
-
-//import { useDispatch, useSelector } from 'react-redux';
-
-
-
-export default function Card({name, image , capital}) {
+export default function Card({name, image , continent}) {
         return (
-                <div>
-                        <h3>{name}</h3>
-                        <h5>{capital}</h5>
-                        <img src={image} alt='imagen de bandera' width='200px' height= '100px' />
+                <div className={style.tarjeta}>
+                        
+                        <h3 className= {style.title}>{name}</h3>
+                        <h5 className={style.title}>{continent}</h5>
+                        <img src={image} alt='imagen de bandera' height='100px' className={style.img} />
 
 
 

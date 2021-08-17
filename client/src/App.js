@@ -13,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
     <div className="App">
-      <Nav/>
+        <Nav/>
         <Switch>
         <Route exact path= '/' component = {LandingPage}/>
         <Route exact path = '/countries' component = {Home}/>

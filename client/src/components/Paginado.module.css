@@ -9,5 +9,13 @@
            background-color: black;
 
         }
+.button{
+        background-color: slategrey;
+        color:snow;
+        }
+        .button:hover{
+                color: slategrey;
+                background-color:snow;
 
+        }
 

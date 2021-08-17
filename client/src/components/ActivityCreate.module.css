@@ -1,0 +1,34 @@
+.title{
+        font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        padding: 5px;
+}
+
+.ent{
+        width: 400px;
+        background-color: #E7E7E7;
+        display: inline-table;
+
+
+}
+
+.btn{ 
+        display: inline-table;
+        padding: 50px;
+	background-color: #0095eb;
+	padding: 10px 45px 10px 45px;
+	color: 	white;
+     
+}
+.btn:hover{
+        color: black;
+        background-color: white ;
+
+}
+
+.table{
+        padding: 50px;
+        background-color: #E7E7E7;;
+        display: inline-table;
+        width: 400px;
+
+}
