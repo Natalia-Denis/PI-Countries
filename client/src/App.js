@@ -8,6 +8,7 @@ import Nav from './components/Nav';
 import DetailActivity from './components/DetailActivity';
 import Tourism from './components/Tourism';
 import Aboutme from './components/Aboutme';
+import CardActivity from './components/CardActivity';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route exact path = '/countries' component = {Home}/>
         <Route exact path = '/activity' component = {ActivityCreate}/>
         <Route path = '/countries/:id' component = {Detail}/>
-        <Route path = '/activity/:id' component = {DetailActivity}/>
+        <Route path = '/activity/:id' component = {CardActivity}/>
         <Route exact path = '/tourism' component = {Tourism}/>
         <Route exact path = '/about' component = {Aboutme}/>
       </Switch>

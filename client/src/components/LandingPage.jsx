@@ -5,7 +5,6 @@ import style from './LandingPage.module.css'
 
 
 export default function LandingPage() {
-  console.log(style)
   return (
     <div >
       <h1 className={style.title}>Destinos del Mundo</h1>

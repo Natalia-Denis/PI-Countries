@@ -1,24 +1,28 @@
-import React, {useEffect} from 'react'
-import { getActivities } from '../actions'
-import { useDispatch, useSelector } from "react-redux";
-import DetailActivity from './DetailActivity';
-import { Link } from 'react-router-dom';
-import { useState } from "react";
+import React  from 'react'
+import {  useSelector } from "react-redux";
 
-export default function Tourism(props) {
-        const actividad=props
-        console.log(props, 'props')
+import CardActivity from './CardActivity';
+
+
+export default function Tourism() {
+        const actividad=useSelector((store)=>store.activities)
+        console.log(actividad, 'props')
+        if(actividad.length===0){
+          let aux= 'Aun no hay actividades para mostrar'
+          return aux;
+        } 
        return (
-                <div>
-         {/*  {actividad?.map((el) => (
+              <div>             
+         {actividad.map(el => (
            <div>
-             <h2>Nombre={el.name}</h2>
-             <DetailActivity id={el.id}/>
-             </div>
-             ))}  */}
-                   </div>
-                          
-              )
-            }
+          <CardActivity name={el.name} duracion={el.duracion} dificultad={el.dificultad} 
+          temporada={el.temporada} paises={el.countries}/>
+          </div>      
+                         
+              )) }
+            </div>
+       )
+
+          }
        
      

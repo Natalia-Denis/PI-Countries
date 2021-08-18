@@ -115,9 +115,7 @@ export default function Home() {
         allCountries={allCountries?.length}
         paginado={paginado}
       />
-      <Tourism props={allActivities} />
-
-      {currentCountry?.map((el) => {
+     {currentCountry?.map((el) => {
         return (
          <div>
             <Link

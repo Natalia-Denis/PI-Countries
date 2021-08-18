@@ -1,13 +1,12 @@
 import React, { useState} from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { postActivities } from "../actions/index";
+import { useSelector } from "react-redux";
 import { ACTIVITIES_URL } from "../routes"; 
 import axios from "axios";
 import style from './ActivityCreate.module.css'
 
 
 export default function ActivityCreate() {
-  const dispatch = useDispatch();
+  
   const countries = useSelector((state) => state.allCountries);
 
   const [validate, setValidate]= useState({})
@@ -32,9 +31,6 @@ export default function ActivityCreate() {
 
   function agregarPais() {
     var aux=countries.filter(e=>e.name===activity.pais)
-    console.log (aux[0], 'pais')
-    console.log (aux[0].name,'name')
-
     if(activity.paises.length===0){
         setActivity({
         ...activity,
@@ -44,19 +40,19 @@ export default function ActivityCreate() {
           console.log (activity.paises, 'primer pais')
     }else {
       console.log('son mas de uno')
+      let flag=false;
       for(let i=0;i<activity.paises.length;i++){
-        if(activity.paises[i]!==aux[0].id){
-         setActivity({
-            ...activity,
-            paises:[...activity.paises,aux[0].id]
-          })
-          console.log (activity.paises)
-        }else {
-          setActivity({...activity, paises:[...activity.paises]})
-          alert('El pais ya esta agregado a esta actividad')
-          
-        }
+        if(activity.paises[i]===aux[0].id){
+         flag = true;
+        } 
       }
+       if(flag===false){
+        setActivity({
+        ...activity,
+        paises:[...activity.paises,aux[0].id]
+      })
+      }
+      
    } 
   console.log(activity.paises)
   }
@@ -64,7 +60,8 @@ export default function ActivityCreate() {
  function borrarPais(id){
    console.log (id, 'id de borrar')
    setActivity({
-     paises:[activity.paises.filter(el=>el!==id)]
+    ...activity,
+     paises:[...activity.paises.filter(el=>el!==id)]
    })
    console.log(activity.paises, 'ya borrado')
 
@@ -152,9 +149,10 @@ export default function ActivityCreate() {
               {countries && countries.map((e) => <option value={e.name} />)}
          </datalist> 
       <button onClick={() => agregarPais()} > Agregar Pais</button>
+
            {activity.paises.map(el => 
            <div> <p> {el} </p> 
-            <tr> <button value={el} onClick={()=>borrarPais(el)}>X</button></tr>
+            <button value={el} onClick={()=>borrarPais(el)}>X</button>
             </div>   )}
       </table> <br />
             {validate.paises && <h5>{validate.paises}</h5>}
